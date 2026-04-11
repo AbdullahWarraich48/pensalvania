@@ -1,64 +1,65 @@
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/50 rounded-bl-[120px] -z-10" />
-      <div className="absolute top-20 right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-20 left-10 w-48 h-48 bg-primary/5 rounded-full blur-2xl -z-10" />
+    <section className="relative min-h-screen flex items-center pt-16">
+      {/* Background image with dark overlay */}
+      <div className="absolute inset-0 z-0">
+        <img src="/images/hero-bg.jpg" alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-section-dark/90 via-section-dark/70 to-section-dark/40" />
+      </div>
 
-      <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-        <div className="space-y-8">
-          <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium">
-            <Heart className="w-4 h-4 fill-primary text-primary" />
-            Give furniture a second life
-          </div>
-
-          <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight">
-            Donate Your <span className="text-primary">Furniture</span>, Change a Life
-          </h1>
-
-          <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
-            Connect your gently used furniture with families in need. Simple pickup, meaningful impact, zero hassle.
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-2xl">
+          <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-4">
+            PA Furniture Mission
           </p>
 
-          <div className="flex flex-wrap gap-4">
-            <Button variant="hero" size="lg" className="rounded-full px-8 py-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-section-dark-foreground leading-tight mb-6">
+            Restore Comfort <em className="italic">&</em><br />
+            Dignity to Every<br />
+            Home
+          </h1>
+
+          <p className="text-section-dark-foreground/70 text-lg max-w-lg mb-8 leading-relaxed">
+            Helping families in need with essential furniture through community support, donations, and volunteers.
+          </p>
+
+          <div className="flex flex-wrap gap-4 mb-10">
+            <Button variant="hero" size="lg" className="rounded-md px-8 py-6">
               Donate Now <ArrowRight className="w-5 h-5 ml-1" />
             </Button>
-            <Button variant="heroOutline" size="lg" className="rounded-full px-8 py-6">
+            <Button variant="heroOutline" size="lg" className="rounded-md px-8 py-6 border-section-dark-foreground/40 text-section-dark-foreground hover:bg-section-dark-foreground hover:text-section-dark">
               Learn More
             </Button>
           </div>
 
-          <div className="flex items-center gap-8 pt-4">
-            <div>
-              <p className="text-3xl font-bold text-foreground">12K+</p>
-              <p className="text-sm text-muted-foreground">Items Donated</p>
-            </div>
-            <div className="w-px h-10 bg-border" />
-            <div>
-              <p className="text-3xl font-bold text-foreground">5K+</p>
-              <p className="text-sm text-muted-foreground">Families Helped</p>
-            </div>
-            <div className="w-px h-10 bg-border" />
-            <div>
-              <p className="text-3xl font-bold text-foreground">98%</p>
-              <p className="text-sm text-muted-foreground">Satisfaction</p>
-            </div>
+          <div className="flex items-center gap-2 text-section-dark-foreground/60 text-sm">
+            <CheckCircle className="w-4 h-4 text-primary" />
+            <span>Tax-deductible donations accepted year-round</span>
           </div>
         </div>
+      </div>
 
-        <div className="relative hidden lg:block">
-          <div className="relative w-full aspect-square max-w-lg mx-auto">
-            <div className="absolute inset-0 bg-primary/10 rounded-[40px] rotate-6" />
-            <img
-              src="/hero-furniture.jpg"
-              alt="Beautifully arranged donated furniture"
-              className="relative w-full h-full object-cover rounded-[40px] shadow-2xl"
-            />
+      {/* Bottom bar with stats */}
+      <div className="absolute bottom-0 left-0 right-0 bg-section-dark/80 backdrop-blur-sm border-t border-section-dark-foreground/10 z-10">
+        <div className="container mx-auto px-6 py-4 flex flex-wrap justify-center md:justify-between gap-6 text-section-dark-foreground/70 text-sm">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-primary" />
+            Serving Local Families
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-primary" />
+            Free Pickup & Delivery
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-primary" />
+            Established Since 2010
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-primary" />
+            Community Volunteers
           </div>
         </div>
       </div>
