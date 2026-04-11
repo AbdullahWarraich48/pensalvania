@@ -34,7 +34,7 @@ const Stories = () => {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {stories.map((story, i) => (
-            <div key={i} className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-border group">
+            <div key={i} className="bg-background rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-primary/10 group">
               <div className="relative h-52 overflow-hidden">
                 <img
                   src={story.image}

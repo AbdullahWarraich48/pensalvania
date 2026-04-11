@@ -24,7 +24,7 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="py-20 bg-secondary">
+    <section className="py-20 bg-warm-bg">
       <div className="container mx-auto px-6">
         <div className="text-center mb-14">
           <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
@@ -37,7 +37,7 @@ const Testimonials = () => {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {testimonials.map((t, i) => (
-            <div key={i} className="bg-card rounded-xl p-6 shadow-md border border-border">
+            <div key={i} className="bg-background rounded-xl p-6 shadow-md border border-primary/10">
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.rating }).map((_, j) => (
                   <Star key={j} className="w-4 h-4 text-primary fill-primary" />
@@ -46,7 +46,7 @@ const Testimonials = () => {
               <p className="text-muted-foreground text-sm leading-relaxed mb-6 italic">"{t.text}"</p>
               <div>
                 <p className="text-sm font-semibold text-foreground">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
+                <p className="text-xs text-primary/70">{t.role}</p>
               </div>
             </div>
           ))}
