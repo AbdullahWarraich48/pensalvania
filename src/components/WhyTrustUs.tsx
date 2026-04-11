@@ -1,26 +1,10 @@
 import { Target, Users, MessageCircle, Heart } from "lucide-react";
 
 const reasons = [
-  {
-    icon: Target,
-    title: "Direct Impact",
-    desc: "Every donation goes directly to families in need. We ensure 90% of contributions fund furniture distribution.",
-  },
-  {
-    icon: Users,
-    title: "Community Driven",
-    desc: "With over 500 active volunteers, our community powers everything we do — from pickups to deliveries.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Full Support",
-    desc: "We provide end-to-end support. From scheduling pickups to delivery and setup, we handle everything.",
-  },
-  {
-    icon: Heart,
-    title: "Life-Changing Work",
-    desc: "Our work transforms empty houses into homes — giving families comfort, dignity, and stability.",
-  },
+  { icon: Target, title: "Direct Impact", desc: "Every donation goes directly to families in need. We ensure 90% of contributions fund furniture distribution." },
+  { icon: Users, title: "Community Driven", desc: "With over 500 active volunteers, our community powers everything we do — from pickups to deliveries." },
+  { icon: MessageCircle, title: "Full Support", desc: "We provide end-to-end support. From scheduling pickups to delivery and setup, we handle everything." },
+  { icon: Heart, title: "Life-Changing Work", desc: "Our work transforms empty houses into homes — giving families comfort, dignity, and stability." },
 ];
 
 const WhyTrustUs = () => {
