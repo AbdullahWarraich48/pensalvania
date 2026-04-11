@@ -5,6 +5,7 @@ import ImpactStats from "@/components/ImpactStats";
 import Stories from "@/components/Stories";
 import AboutSection from "@/components/AboutSection";
 import WhyTrustUs from "@/components/WhyTrustUs";
+import FurnitureCategories from "@/components/FurnitureCategories";
 import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
 import Partners from "@/components/Partners";
@@ -21,6 +22,7 @@ const Index = () => {
       <Stories />
       <AboutSection />
       <WhyTrustUs />
+      <FurnitureCategories />
       <Gallery />
       <Testimonials />
       <Partners />
