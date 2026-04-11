@@ -27,7 +27,7 @@ const ways = [
 
 const WaysToHelp = () => {
   return (
-    <section className="py-20 bg-background">
+    <section className="py-20 bg-warm-bg">
       <div className="container mx-auto px-6">
         <div className="text-center mb-14">
           <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
@@ -43,7 +43,7 @@ const WaysToHelp = () => {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {ways.map((way, i) => (
-            <div key={i} className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group border border-border">
+            <div key={i} className="bg-background rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group border border-primary/10">
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={way.image}

@@ -2,7 +2,7 @@ const partners = ["United Way", "Habitat for Humanity", "Red Cross", "Salvation 
 
 const Partners = () => {
   return (
-    <section className="py-16 bg-background">
+    <section className="py-16 bg-warm-light">
       <div className="container mx-auto px-6 text-center">
         <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
           Together We Can
@@ -14,7 +14,7 @@ const Partners = () => {
           {partners.map((p, i) => (
             <div
               key={i}
-              className="px-6 py-3 border border-border rounded-lg text-muted-foreground text-sm font-medium hover:border-primary hover:text-primary transition-colors cursor-pointer"
+              className="px-6 py-3 border border-primary/20 bg-background rounded-lg text-foreground text-sm font-medium hover:border-primary hover:bg-accent hover:text-primary transition-colors cursor-pointer"
             >
               {p}
             </div>

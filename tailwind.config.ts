@@ -61,6 +61,8 @@ export default {
           DEFAULT: "hsl(var(--section-dark))",
           foreground: "hsl(var(--section-dark-foreground))",
         },
+        "warm-bg": "hsl(var(--warm-bg))",
+        "warm-light": "hsl(var(--warm-light))",
       },
       borderRadius: {
         lg: "var(--radius)",

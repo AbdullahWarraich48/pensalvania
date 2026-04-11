@@ -22,14 +22,14 @@ const Gallery = () => {
 
         <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {images.map((img, i) => (
-            <div key={i} className="relative overflow-hidden rounded-xl group aspect-[4/3]">
+            <div key={i} className="relative overflow-hidden rounded-xl group aspect-[4/3] shadow-md">
               <img
                 src={img.src}
                 alt={img.alt}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-section-dark/0 group-hover:bg-section-dark/30 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300" />
             </div>
           ))}
         </div>
