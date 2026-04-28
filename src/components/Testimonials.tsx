@@ -1,7 +1,12 @@
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import {
+  fetchTestimonialcardsContent,
+  type TestimonialcardsApiData,
+} from "@/integrations/api/testimonialcards-api";
 
-const testimonials = [
+const FALLBACK_TESTIMONIALS = [
   {
     text: "The entire process was seamless. PA Furniture Mission picked up our old couch and within days, we knew it had found a new home with a family who truly needed it.",
     name: "Sarah L.",
@@ -23,6 +28,47 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState(FALLBACK_TESTIMONIALS);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const applyData = (data: TestimonialcardsApiData) => {
+      setTestimonials([
+        {
+          text: data.card1Text || FALLBACK_TESTIMONIALS[0].text,
+          name: data.card1Name || FALLBACK_TESTIMONIALS[0].name,
+          role: data.card1Role || FALLBACK_TESTIMONIALS[0].role,
+          rating: 5,
+        },
+        {
+          text: data.card2Text || FALLBACK_TESTIMONIALS[1].text,
+          name: data.card2Name || FALLBACK_TESTIMONIALS[1].name,
+          role: data.card2Role || FALLBACK_TESTIMONIALS[1].role,
+          rating: 5,
+        },
+        {
+          text: data.card3Text || FALLBACK_TESTIMONIALS[2].text,
+          name: data.card3Name || FALLBACK_TESTIMONIALS[2].name,
+          role: data.card3Role || FALLBACK_TESTIMONIALS[2].role,
+          rating: 5,
+        },
+      ]);
+    };
+
+    const loadTestimonialcards = async () => {
+      try {
+        const payload = await fetchTestimonialcardsContent(controller.signal);
+        if (payload?.data) applyData(payload.data);
+      } catch (_error) {
+        // Keep fallback content when API is unavailable.
+      }
+    };
+
+    loadTestimonialcards();
+    return () => controller.abort();
+  }, []);
+
   return (
     <section className="py-20 bg-warm-bg">
       <div className="container mx-auto px-6">

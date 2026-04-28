@@ -10,6 +10,7 @@ import Volunteer from "./pages/Volunteer.tsx";
 import Pickup from "./pages/Pickup.tsx";
 import CommunityPartners from "./pages/CommunityPartners.tsx";
 import BecomePartner from "./pages/BecomePartner.tsx";
+import FurnitureCategoryDetails from "./pages/FurnitureCategoryDetails.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/pickup" element={<Pickup />} />
           <Route path="/community-partners" element={<CommunityPartners />} />
           <Route path="/become-a-partner" element={<BecomePartner />} />
+          <Route path="/furniture-categories/:slug" element={<FurnitureCategoryDetails />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

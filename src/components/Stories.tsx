@@ -1,4 +1,19 @@
-const stories = [
+import { useEffect, useState } from "react";
+import {
+  fetchRealstoriesContent,
+  resolveRealstoriesImageUrl,
+  type RealstoriesApiData,
+} from "@/integrations/api/realstories-api";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+const FALLBACK_STORIES = [
   {
     image: "/images/story-1.jpg",
     family: "The Johnson Family",
@@ -17,6 +32,47 @@ const stories = [
 ];
 
 const Stories = () => {
+  const [stories, setStories] = useState(FALLBACK_STORIES);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const applyData = (data: RealstoriesApiData) => {
+      setStories([
+        {
+          image: resolveRealstoriesImageUrl(data.card1ImageUrl) || FALLBACK_STORIES[0].image,
+          family: data.card1Family || FALLBACK_STORIES[0].family,
+          text: data.card1Text || FALLBACK_STORIES[0].text,
+        },
+        {
+          image: resolveRealstoriesImageUrl(data.card2ImageUrl) || FALLBACK_STORIES[1].image,
+          family: data.card2Family || FALLBACK_STORIES[1].family,
+          text: data.card2Text || FALLBACK_STORIES[1].text,
+        },
+        {
+          image: resolveRealstoriesImageUrl(data.card3ImageUrl) || FALLBACK_STORIES[2].image,
+          family: data.card3Family || FALLBACK_STORIES[2].family,
+          text: data.card3Text || FALLBACK_STORIES[2].text,
+        },
+      ]);
+    };
+
+    const loadRealstories = async () => {
+      try {
+        const payload = await fetchRealstoriesContent(controller.signal);
+        if (payload?.data) applyData(payload.data);
+      } catch (_error) {
+        // Keep fallback content when API is unavailable.
+      }
+    };
+
+    loadRealstories();
+    return () => controller.abort();
+  }, []);
+
+  const getExcerpt = (text: string) =>
+    text.length > 110 ? `${text.slice(0, 110).trim()}...` : text;
+
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-6">
@@ -45,8 +101,30 @@ const Stories = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-lg font-bold text-foreground mb-2">{story.family}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{story.text}</p>
-                <a href="#" className="text-primary text-sm font-semibold hover:underline">Read More →</a>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{getExcerpt(story.text)}</p>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button type="button" className="text-primary text-sm font-semibold hover:underline">
+                      Read More →
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="w-[95vw] max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6">
+                    <DialogHeader>
+                      <DialogTitle>{story.family}</DialogTitle>
+                      <DialogDescription>Full story</DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <img
+                        src={story.image}
+                        alt={story.family}
+                        className="w-full h-48 sm:h-64 object-cover rounded-md"
+                      />
+                      <p className="text-sm text-foreground leading-relaxed break-words">
+                        {story.text}
+                      </p>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           ))}

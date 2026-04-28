@@ -1,4 +1,12 @@
-const categories = [
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  fetchFurnitureCategories,
+  resolveFurnitureImageUrl,
+  type FurnitureCategory,
+} from "@/integrations/api/furniturecategories-api";
+
+const FALLBACK_CATEGORIES = [
   { image: "/images/cat-sofa.jpg", name: "Sofas & Couches" },
   { image: "/images/cat-bed.jpg", name: "Beds & Mattresses" },
   { image: "/images/cat-table.jpg", name: "Dining Tables" },
@@ -8,6 +16,36 @@ const categories = [
 ];
 
 const FurnitureCategories = () => {
+  const [categories, setCategories] = useState(FALLBACK_CATEGORIES);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const applyData = (items: FurnitureCategory[]) => {
+      setCategories(
+        items.map((item) => ({
+          image: resolveFurnitureImageUrl(item.coverImageUrl) || FALLBACK_CATEGORIES[0].image,
+          name: item.title,
+          slug: item.slug,
+        }))
+      );
+    };
+
+    const loadCategories = async () => {
+      try {
+        const payload = await fetchFurnitureCategories(controller.signal);
+        if (payload?.data?.length) {
+          applyData(payload.data);
+        }
+      } catch (_error) {
+        // Keep fallback content when API is unavailable.
+      }
+    };
+
+    loadCategories();
+    return () => controller.abort();
+  }, []);
+
   return (
     <section className="py-20 bg-warm-light">
       <div className="container mx-auto px-6">
@@ -25,7 +63,11 @@ const FurnitureCategories = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {categories.map((cat, i) => (
-            <div key={i} className="group relative overflow-hidden rounded-xl shadow-md aspect-square cursor-pointer">
+            <Link
+              to={`/furniture-categories/${cat.slug || `category-${i + 1}`}`}
+              key={i}
+              className="group relative overflow-hidden rounded-xl shadow-md aspect-square cursor-pointer block"
+            >
               <img
                 src={cat.image}
                 alt={cat.name}
@@ -36,7 +78,7 @@ const FurnitureCategories = () => {
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="text-background font-bold text-sm md:text-base">{cat.name}</h3>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

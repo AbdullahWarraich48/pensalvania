@@ -1,7 +1,13 @@
 import { Heart, Users, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import {
+  fetchThreewaysContent,
+  resolveThreewaysImageUrl,
+  type ThreewaysApiData,
+} from "@/integrations/api/threeways-api";
 
-const ways = [
+const FALLBACK_WAYS = [
   {
     image: "/images/donate-furniture.jpg",
     icon: Heart,
@@ -25,19 +31,70 @@ const ways = [
   },
 ];
 
+const FALLBACK_SECTION = {
+  tagline: "How You Can Help",
+  heading: "Three Ways to Make a Difference",
+  description:
+    "Choose how you'd like to contribute - every action creates a positive impact for families in our community.",
+};
+
 const WaysToHelp = () => {
+  const [ways, setWays] = useState(FALLBACK_WAYS);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const applyData = (data: ThreewaysApiData) => {
+      setWays([
+        {
+          image: resolveThreewaysImageUrl(data.card1ImageUrl) || FALLBACK_WAYS[0].image,
+          icon: Heart,
+          title: data.card1Title || FALLBACK_WAYS[0].title,
+          subtitle: data.card1Subtitle || FALLBACK_WAYS[0].subtitle,
+          description: data.card1Description || FALLBACK_WAYS[0].description,
+        },
+        {
+          image: resolveThreewaysImageUrl(data.card2ImageUrl) || FALLBACK_WAYS[1].image,
+          icon: Users,
+          title: data.card2Title || FALLBACK_WAYS[1].title,
+          subtitle: data.card2Subtitle || FALLBACK_WAYS[1].subtitle,
+          description: data.card2Description || FALLBACK_WAYS[1].description,
+        },
+        {
+          image: resolveThreewaysImageUrl(data.card3ImageUrl) || FALLBACK_WAYS[2].image,
+          icon: Handshake,
+          title: data.card3Title || FALLBACK_WAYS[2].title,
+          subtitle: data.card3Subtitle || FALLBACK_WAYS[2].subtitle,
+          description: data.card3Description || FALLBACK_WAYS[2].description,
+        },
+      ]);
+    };
+
+    const loadThreeways = async () => {
+      try {
+        const payload = await fetchThreewaysContent(controller.signal);
+        if (payload?.data) applyData(payload.data);
+      } catch (_error) {
+        // Keep fallback content when API is unavailable.
+      }
+    };
+
+    loadThreeways();
+    return () => controller.abort();
+  }, []);
+
   return (
     <section className="py-20 bg-warm-bg">
       <div className="container mx-auto px-6">
         <div className="text-center mb-14">
           <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-            How You Can Help
+            {FALLBACK_SECTION.tagline}
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
-            Three Ways to Make a Difference
+            {FALLBACK_SECTION.heading}
           </h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Choose how you'd like to contribute — every action creates a positive impact for families in our community.
+            {FALLBACK_SECTION.description}
           </p>
         </div>
 

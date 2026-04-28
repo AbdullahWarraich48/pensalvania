@@ -1,6 +1,11 @@
 import { Home, Package, Users, DollarSign, TrendingUp, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  fetchImpactcardsContent,
+  type ImpactcardsApiData,
+} from "@/integrations/api/impactcards-api";
 
-const stats = [
+const FALLBACK_STATS = [
   { icon: Home, value: "2,500+", label: "Families Helped", desc: "Providing essential furniture to families transitioning out of shelters." },
   { icon: Package, value: "8,000+", label: "Items Donated", desc: "Quality furniture pieces collected and distributed to those in need." },
   { icon: Users, value: "500+", label: "Volunteers Engaged", desc: "Dedicated community members giving their time and effort." },
@@ -10,6 +15,65 @@ const stats = [
 ];
 
 const ImpactStats = () => {
+  const [stats, setStats] = useState(FALLBACK_STATS);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const applyData = (data: ImpactcardsApiData) => {
+      setStats([
+        {
+          icon: Home,
+          value: data.card1Value || FALLBACK_STATS[0].value,
+          label: data.card1Label || FALLBACK_STATS[0].label,
+          desc: data.card1Description || FALLBACK_STATS[0].desc,
+        },
+        {
+          icon: Package,
+          value: data.card2Value || FALLBACK_STATS[1].value,
+          label: data.card2Label || FALLBACK_STATS[1].label,
+          desc: data.card2Description || FALLBACK_STATS[1].desc,
+        },
+        {
+          icon: Users,
+          value: data.card3Value || FALLBACK_STATS[2].value,
+          label: data.card3Label || FALLBACK_STATS[2].label,
+          desc: data.card3Description || FALLBACK_STATS[2].desc,
+        },
+        {
+          icon: DollarSign,
+          value: data.card4Value || FALLBACK_STATS[3].value,
+          label: data.card4Label || FALLBACK_STATS[3].label,
+          desc: data.card4Description || FALLBACK_STATS[3].desc,
+        },
+        {
+          icon: TrendingUp,
+          value: data.card5Value || FALLBACK_STATS[4].value,
+          label: data.card5Label || FALLBACK_STATS[4].label,
+          desc: data.card5Description || FALLBACK_STATS[4].desc,
+        },
+        {
+          icon: MapPin,
+          value: data.card6Value || FALLBACK_STATS[5].value,
+          label: data.card6Label || FALLBACK_STATS[5].label,
+          desc: data.card6Description || FALLBACK_STATS[5].desc,
+        },
+      ]);
+    };
+
+    const loadImpactcards = async () => {
+      try {
+        const payload = await fetchImpactcardsContent(controller.signal);
+        if (payload?.data) applyData(payload.data);
+      } catch (_error) {
+        // Keep fallback content when API is unavailable.
+      }
+    };
+
+    loadImpactcards();
+    return () => controller.abort();
+  }, []);
+
   return (
     <section id="impact" className="py-20 bg-background">
       <div className="container mx-auto px-6">

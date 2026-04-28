@@ -1,5 +1,10 @@
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  fetchVolunteerImagesContent,
+  resolveVolunteerImageUrl,
+  type VolunteerImagesContent,
+} from "@/integrations/api/volunteerimages-api";
 
 type CarouselImage = {
   id: string;
@@ -9,22 +14,58 @@ type CarouselImage = {
 
 const CONTINUOUS_SPEED_PX_PER_FRAME = 0.35;
 
+const fallbackContent: VolunteerImagesContent = {
+  heroImageUrl: "/images/hero-bg.jpg",
+  image1Url: "/images/hero-bg.jpg",
+  image2Url: "/images/about.jpg",
+  image3Url: "/images/cat-sofa.jpg",
+  image4Url: "/images/hero-bg.jpg",
+  image5Url: "/images/about.jpg",
+};
+
 const VolunteerMediaCarouselSection = () => {
+  const [content, setContent] = useState<VolunteerImagesContent>(fallbackContent);
   const images = useMemo<CarouselImage[]>(
     () => [
-      { id: "img-1", src: "/images/hero-bg.jpg", alt: "Volunteer work in action" },
-      { id: "img-2", src: "/images/about.jpg", alt: "Community support" },
-      { id: "img-3", src: "/images/cat-sofa.jpg", alt: "Furniture ready for a new home" },
-      { id: "img-4", src: "/images/hero-bg.jpg", alt: "Warehouse and sorting" },
-      { id: "img-5", src: "/images/about.jpg", alt: "Team and partners" },
+      { id: "img-1", src: resolveVolunteerImageUrl(content.image1Url), alt: "Volunteer work in action" },
+      { id: "img-2", src: resolveVolunteerImageUrl(content.image2Url), alt: "Community support" },
+      { id: "img-3", src: resolveVolunteerImageUrl(content.image3Url), alt: "Furniture ready for a new home" },
+      { id: "img-4", src: resolveVolunteerImageUrl(content.image4Url), alt: "Warehouse and sorting" },
+      { id: "img-5", src: resolveVolunteerImageUrl(content.image5Url), alt: "Team and partners" },
     ],
-    [],
+    [content],
   );
 
   const [failed, setFailed] = useState<Record<string, boolean>>({});
   const [api, setApi] = useState<CarouselApi | null>(null);
   const rafRef = useRef<number | null>(null);
   const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const load = async () => {
+      try {
+        const result = await fetchVolunteerImagesContent();
+        if (isMounted) {
+          setContent({
+            heroImageUrl: result.heroImageUrl || fallbackContent.heroImageUrl,
+            image1Url: result.image1Url || fallbackContent.image1Url,
+            image2Url: result.image2Url || fallbackContent.image2Url,
+            image3Url: result.image3Url || fallbackContent.image3Url,
+            image4Url: result.image4Url || fallbackContent.image4Url,
+            image5Url: result.image5Url || fallbackContent.image5Url,
+          });
+        }
+      } catch {
+        if (isMounted) setContent(fallbackContent);
+      }
+    };
+
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const stopAutoScroll = () => {
     if (!rafRef.current) return;
@@ -75,7 +116,7 @@ const VolunteerMediaCarouselSection = () => {
             <div className="relative aspect-[21/9] w-full">
               {!failed["hero"] ? (
                 <img
-                  src="/images/hero-bg.jpg"
+                  src={resolveVolunteerImageUrl(content.heroImageUrl)}
                   alt=""
                   aria-hidden="true"
                   loading="lazy"

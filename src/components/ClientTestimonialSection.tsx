@@ -4,6 +4,7 @@ type ClientTestimonialSectionProps = {
   heading?: string;
   quote?: string;
   videoEmbedUrl?: string;
+  videoUrl?: string;
   posterImageSrc?: string;
 };
 
@@ -11,6 +12,7 @@ const ClientTestimonialSection = ({
   heading = "Client Testimony",
   quote = "It’s about turning houses into homes!",
   videoEmbedUrl,
+  videoUrl,
   posterImageSrc = "/images/hero-bg.jpg",
 }: ClientTestimonialSectionProps) => {
   const [posterFailed, setPosterFailed] = useState(false);
@@ -39,6 +41,10 @@ const ClientTestimonialSection = ({
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   />
+                ) : videoUrl ? (
+                  <video controls className="absolute inset-0 h-full w-full object-cover">
+                    <source src={videoUrl} />
+                  </video>
                 ) : (
                   <>
                     {!posterFailed ? (

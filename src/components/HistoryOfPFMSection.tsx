@@ -1,14 +1,40 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ClientTestimonialSection from "@/components/ClientTestimonialSection";
 import FoundersFaqSection from "@/components/FoundersFaqSection";
-import { useState } from "react";
+import { fetchHistoryFoundersVideo, resolveHistoryFoundersVideoUrl } from "@/integrations/api/historyfoundersvideo-api";
+import { useEffect, useState } from "react";
 
 const HistoryOfPFMSection = () => {
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+  const [clientVideo, setClientVideo] = useState({
+    heading: "Client Testimony",
+    quote: "It’s about turning houses into homes!",
+    videoUrl: "",
+  });
 
   const handleImageError = (key: string) => {
     setFailedImages((prev) => ({ ...prev, [key]: true }));
   };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const loadClientVideo = async () => {
+      try {
+        const payload = await fetchHistoryFoundersVideo(controller.signal);
+        if (payload?.data) {
+          setClientVideo({
+            heading: payload.data.title || "Client Testimony",
+            quote: payload.data.description || "It’s about turning houses into homes!",
+            videoUrl: resolveHistoryFoundersVideoUrl(payload.data.videoUrl),
+          });
+        }
+      } catch (_error) {
+        // Keep fallback client testimony content when API is unavailable.
+      }
+    };
+    loadClientVideo();
+    return () => controller.abort();
+  }, []);
 
   return (
     <section className="py-16 bg-background" aria-label="History of the Pennsylvania Furniture Mission">
@@ -99,7 +125,11 @@ const HistoryOfPFMSection = () => {
           </div>
 
           <div className="mt-12">
-            <ClientTestimonialSection />
+            <ClientTestimonialSection
+              heading={clientVideo.heading}
+              quote={clientVideo.quote}
+              videoUrl={clientVideo.videoUrl}
+            />
           </div>
         </div>
       </div>
