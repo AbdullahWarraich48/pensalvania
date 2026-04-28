@@ -26,8 +26,10 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-wrap gap-4 mb-10">
-            <Button variant="hero" size="lg" className="rounded-md px-8 py-6">
-              Donate Now <ArrowRight className="w-5 h-5 ml-1" />
+            <Button asChild variant="hero" size="lg" className="rounded-md px-8 py-6">
+              <a href="/donate" aria-label="Donate financially">
+                Donate Now <ArrowRight className="w-5 h-5 ml-1" />
+              </a>
             </Button>
             <Button variant="heroOutline" size="lg" className="rounded-md px-8 py-6 border-background/40 text-background hover:bg-background hover:text-foreground">
               Learn More

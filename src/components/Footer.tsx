@@ -6,13 +6,18 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-10 mb-12">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <Heart className="w-6 h-6 text-primary fill-primary" />
-              <div>
-                <span className="text-lg font-bold font-[var(--font-heading)] text-foreground">PA Furniture</span>
-                <span className="block text-xs text-primary -mt-1">Mission</span>
-              </div>
-            </div>
+            <a
+              href="/"
+              className="inline-flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background"
+              aria-label="Go to home"
+            >
+              <img
+                src="/images/Pennsylvania-Logo2.png"
+                alt="Pennsylvania Furniture Mission"
+                className="h-16 w-auto"
+                loading="lazy"
+              />
+            </a>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Providing quality furniture to families and individuals in need since 2010. Every piece of furniture helps build a home.
             </p>
@@ -69,7 +74,7 @@ const Footer = () => {
 
         <div className="border-t border-primary/10 pt-8 text-center text-muted-foreground/60 text-xs">
           © 2026 PA Furniture Mission. All rights reserved. Made with{" "}
-          <Heart className="w-3 h-3 inline text-primary fill-primary" /> for communities everywhere.
+          <Heart className="w-4 h-4 inline text-primary fill-primary" /> for communities everywhere.
         </div>
       </div>
     </footer>
